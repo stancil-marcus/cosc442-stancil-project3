@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>VendingMachineTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">VendingMachine (Mar 7, 2018 10:03:44 PM)</a> &gt; <a href="../../index.html" class="el_group">VendingMachine</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">project3</a> &gt; <span class="el_source">VendingMachineTest.java</span></div><h1>VendingMachineTest.java</h1><pre class="source lang-java linenums">package project3;
+
+import static org.junit.Assert.*;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.InputMismatchException;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+<span class="fc" id="L15">public class VendingMachineTest {</span>
+
+	static VendingMachine machine;
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+<span class="fc" id="L21">	}</span>
+
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+<span class="fc" id="L25">	}</span>
+	/**
+	 * Creates VendingMachine object to test.
+	 * @throws Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+<span class="fc" id="L32">		machine = new VendingMachine();</span>
+<span class="fc" id="L33">	}</span>
+
+	/**
+	 * Makes machine null after the testing is done
+	 * @throws Exception
+	 */
+	@After
+	public void tearDown() throws Exception {
+<span class="fc" id="L41">		machine = null;</span>
+<span class="fc" id="L42">	}</span>
+	
+	/**
+	 * This method tests the getItem() method by creating an item, adding it to the machine in slot A and seeing if the item we
+	 * just added to slot A is the same item we created.
+	 */
+	@Test
+	public void testAddItem() {
+<span class="fc" id="L50">		VendingMachineItem item = new VendingMachineItem(&quot;bisket&quot;, 2.0);</span>
+<span class="fc" id="L51">		machine.addItem(item, &quot;A&quot;);</span>
+<span class="fc" id="L52">		assertSame(item, machine.getItem(&quot;A&quot;));</span>
+<span class="fc" id="L53">	}</span>
+	
+	/**
+	 * This method tests the getItem() method by adding an item and retrieve it through the getItem() method.
+	 */
+	@Test
+	public void testGetItem() {
+<span class="fc" id="L60">		VendingMachineItem item = new VendingMachineItem(&quot;bisket&quot;, 2.0);</span>
+<span class="fc" id="L61">		machine.addItem(item, &quot;A&quot;);</span>
+<span class="fc" id="L62">		assertSame(item, machine.getItem(&quot;A&quot;));</span>
+<span class="fc" id="L63">	}</span>
+	
+	/**
+	 * This method tests to see if the getItem method fails when the user tries to retrieve an item that is not in the machine.
+	 */
+	@Test (expected = VendingMachineException.class )
+	public void testGetItemFail() {
+<span class="nc" id="L70">		machine.getItem(&quot;R&quot;);</span>
+<span class="nc" id="L71">	}</span>
+	
+	/**
+	 * This method tests the getItem() method by seeing if the prerequisite that an item must be added to a null
+	 * slot is acknowledged. This method should fail.
+	 */
+	@Test(expected = VendingMachineException.class)
+	public void testAddItemFailOccupiedSpace()
+	{
+<span class="fc" id="L80">		VendingMachineItem item = new VendingMachineItem(&quot;cookie&quot;, 2.0);</span>
+<span class="fc" id="L81">		machine.addItem(item, &quot;A&quot;);</span>
+<span class="nc" id="L82">		machine.addItem(item, &quot;A&quot;);</span>
+<span class="nc" id="L83">	}</span>
+	
+	/**
+	 * This method tests the addItem() and getSlotIndex() methods to see if they acknowledge that the user is trying to place 
+	 * an item in a slot that does not exist
+	 */
+	@Test(expected = VendingMachineException.class)
+	public void testAddItemFailWrongCode()
+	{
+<span class="fc" id="L92">		VendingMachineItem item = new VendingMachineItem(&quot;cookie&quot;, 2.0);</span>
+<span class="nc" id="L93">		machine.addItem(item, &quot;E&quot;);</span>
+<span class="nc" id="L94">	}</span>
+	
+	/**
+	 * This method tests the removeItem() method to see if it successfully removes an item from the vending machine.
+	 */
+	@Test
+	public void testRemoveItem()
+	{
+<span class="fc" id="L102">		VendingMachineItem item = new VendingMachineItem(&quot;cookie&quot;, 2.0);</span>
+<span class="fc" id="L103">		machine.addItem(item, &quot;C&quot;);</span>
+<span class="fc" id="L104">		machine.removeItem(&quot;C&quot;);</span>
+<span class="fc" id="L105">	}</span>
+	
+	/**
+	 * This method tests the removeItem() method to see if it fails when trying to remove an item from a null slot.
+	 * This test should fail.
+	 */
+	@Test(expected = VendingMachineException.class)
+	public void testRemoveItemFail()
+	{
+<span class="nc" id="L114">		machine.removeItem(&quot;A&quot;);</span>
+<span class="nc" id="L115">	}</span>
+	
+	@Test(expected = VendingMachineException.class)
+	public void testRemoveItemWrongCode()
+	{
+<span class="nc" id="L120">		machine.removeItem(&quot;5&quot;);</span>
+<span class="nc" id="L121">	}</span>
+	
+	/**
+	 * This method test the insertMoney() method. This method tests if the user can successfully enter money into
+	 * the machine and uses the assertEquals method to see if our balance is the same amount of money we entered.
+	 */
+	@Test
+	public void testInsertMoney()
+	{
+<span class="fc" id="L130">		machine.insertMoney(10.00);</span>
+<span class="fc" id="L131">		assertEquals(10.00, machine.getBalance(), 0.1);</span>
+<span class="fc" id="L132">	}</span>
+	
+	/**
+	 * This method tests to see if the insertMoney() method fails when you try to allocate a negative value to the machine.
+	 * This test should fail.
+	 */
+	@Test(expected = VendingMachineException.class)
+	public void testInsertMoneyFail()
+	{
+<span class="nc" id="L141">		machine.insertMoney(-10.00);</span>
+<span class="nc" id="L142">	}</span>
+	
+	/**
+	 * This method tests the getBalance() method by inserting money into the machine and then using getBalance() to see if the money
+	 * the user should have in the machine is equal to their balance.
+	 */
+	@Test
+	public void testGetBalance()
+	{
+<span class="fc" id="L151">		machine.insertMoney(10.00);</span>
+<span class="fc" id="L152">		assertEquals(10.00, machine.getBalance(),0.1);</span>
+<span class="fc" id="L153">	}</span>
+	
+	/**
+	 * This method tests the makePurchase() method by inserting money into the vending machine and using makePurchase method to see if
+	 * the user can successfully make a purchase. If the makePurchase() method returns true, then the test was
+	 * successful.
+	 */
+	@Test
+	public void testMakePurchase()
+	{
+<span class="fc" id="L163">		machine.insertMoney(10.00);</span>
+<span class="fc" id="L164">		VendingMachineItem item = new VendingMachineItem(&quot;cookie&quot;, 2.0);</span>
+<span class="fc" id="L165">		machine.addItem(item, &quot;A&quot;);</span>
+<span class="fc" id="L166">		assertTrue(machine.makePurchase(&quot;A&quot;));</span>
+<span class="fc" id="L167">	}</span>
+	
+	/**
+	 * This method tests to see if makePurchase() fails when the user has insufficient funds. This test shouldn't
+	 * fail.
+	 */
+	@Test
+	public void testMakePurchaseFailLackOfFunds()
+	{
+<span class="fc" id="L176">		machine.insertMoney(1.00);</span>
+<span class="fc" id="L177">		VendingMachineItem item = new VendingMachineItem(&quot;cookie&quot;, 2.00);</span>
+<span class="fc" id="L178">		machine.addItem(item, &quot;A&quot;);</span>
+<span class="fc" id="L179">		assertFalse(machine.makePurchase(&quot;A&quot;));</span>
+<span class="fc" id="L180">	}</span>
+	
+	/**
+	 * This method tests to see it makePurchase() fails when the user inputs a wrong code. This test shouldn't
+	 * fail.
+	 */
+	@Test
+	public void testMakePurchaseFailIncorrectCode()
+	{
+<span class="fc" id="L189">		machine.insertMoney(2.00);</span>
+<span class="fc" id="L190">		assertFalse(machine.makePurchase(&quot;B&quot;));</span>
+<span class="fc" id="L191">	}</span>
+	
+	/**
+	 * This method tests to see if the machine returns the correct change after the user makes a purchase.
+	 */
+	@Test
+	public void testReturnChange()
+	{
+<span class="fc" id="L199">		machine.insertMoney(10.00);</span>
+<span class="fc" id="L200">		VendingMachineItem item = new VendingMachineItem(&quot;cookie&quot;, 2.0);</span>
+<span class="fc" id="L201">		machine.addItem(item, &quot;D&quot;);</span>
+<span class="fc" id="L202">		machine.makePurchase(&quot;D&quot;);</span>
+<span class="fc" id="L203">		assertEquals(machine.returnChange(), 8,0.1);</span>
+<span class="fc" id="L204">	}</span>
+	
+	@Test
+	public void testGetSlotIndex() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+<span class="fc" id="L208">		Method m = VendingMachine.class.getDeclaredMethod(&quot;getSlotIndex&quot;, String.class);</span>
+<span class="fc" id="L209">		m.setAccessible(true);</span>
+<span class="fc" id="L210">		int i = (int) m.invoke(machine, &quot;C&quot;);</span>
+<span class="fc" id="L211">		assertEquals(i,2);</span>
+<span class="fc" id="L212">}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>VendingMachine (Mar 7, 2018 10:03:44 PM)</div></body></html>
