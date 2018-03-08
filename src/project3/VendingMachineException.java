@@ -18,7 +18,7 @@ public class VendingMachineException extends RuntimeException {
 	public VendingMachineException() {
 	
 	}
- 
+  
 	/**
 	 * Constructor with an error message
 	 * @param reason The error message for the exception
